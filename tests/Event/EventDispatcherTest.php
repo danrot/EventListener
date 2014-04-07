@@ -2,13 +2,6 @@
 use Event\EventDispatcher;
 use Event\EventListener;
 
-/**
- * Created by IntelliJ IDEA.
- * User: daniel
- * Date: 3/22/14
- * Time: 8:10 PM
- */
-
 class EventDispatcherTest extends PHPUnit_Framework_TestCase
 {
     /**
@@ -26,5 +19,21 @@ class EventDispatcherTest extends PHPUnit_Framework_TestCase
         $eventListener = new EventListener();
 
         $this->assertEquals(true, $this->eventDispatcher->register('event.test', $eventListener));
+    }
+
+    public function testDispatch()
+    {
+        $eventListener1 = $this->getMockBuilder('Event\EventListener')->getMock();
+
+        $eventListener1->expects($this->once())->method('onEvent')->with(
+            'event.test',
+            array(
+                'test' => 'test'
+            )
+        );
+
+        $this->eventDispatcher->register('event.test', $eventListener1);
+
+        $this->eventDispatcher->dispatch('event.test', array('test' => 'test'));
     }
 }

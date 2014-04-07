@@ -10,4 +10,16 @@ class EventDispatcher
         $this->listeners[$event][] = $listener;
         return true;
     }
+
+    public function dispatch($event, $data)
+    {
+        foreach ($this->listeners as $type => $listeners) {
+            if ($event == $type) {
+                foreach ($listeners as $listener) {
+                    /** @var $listener EventListener */
+                    $listener->onEvent($event, $data);
+                }
+            }
+        }
+    }
 } 
