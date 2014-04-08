@@ -11,12 +11,12 @@ class EventDispatcherTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->eventDispatcher = new EventDispatcher(null);
+        $this->eventDispatcher = new EventDispatcher();
     }
 
     public function testRegister()
     {
-        $eventListener = new EventListener(null);
+        $eventListener = new EventListener();
 
         $this->assertEquals(true, $this->eventDispatcher->register('event.test', $eventListener));
 

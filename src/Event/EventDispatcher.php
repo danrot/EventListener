@@ -5,12 +5,6 @@ class EventDispatcher
 {
     private $listeners;
 
-    private $logger;
-
-    public function __construct($logger) {
-        $this->logger = $logger;
-    }
-
     public function register($event, EventListenerInterface $listener)
     {
         $this->listeners[$event][] = $listener;
