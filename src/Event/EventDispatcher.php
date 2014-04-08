@@ -5,7 +5,13 @@ class EventDispatcher
 {
     private $listeners;
 
-    public function register($event, $listener)
+    private $logger;
+
+    public function __construct($logger) {
+        $this->logger = $logger;
+    }
+
+    public function register($event, EventListenerInterface $listener)
     {
         $this->listeners[$event][] = $listener;
         return true;
@@ -13,13 +19,19 @@ class EventDispatcher
 
     public function dispatch($event, $data)
     {
+        $success = true;
+
         foreach ($this->listeners as $type => $listeners) {
             if ($event == $type) {
                 foreach ($listeners as $listener) {
                     /** @var $listener EventListener */
-                    $listener->onEvent($event, $data);
+                    if (!$listener->onEvent($event, $data)) {
+                        $success = false;
+                    }
                 }
             }
         }
+
+        return $success;
     }
 } 
